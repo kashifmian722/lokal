@@ -1,0 +1,10 @@
+{% sw_extends 'administration/index.html.twig' %}
+
+{% block administration_scripts %}
+    {{ parent() }}
+     <script type="text/javascript" src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtp-w_3oNutR_GK_w7wWofTxk98zUJ-vc&callback=initAutocomplete&libraries=places&v=weekly"
+      defer
+    ></script>
+{% endblock %}

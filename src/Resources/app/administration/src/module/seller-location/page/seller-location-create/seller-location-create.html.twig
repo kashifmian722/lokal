@@ -1,0 +1,21 @@
+<sw-page>
+    
+    <template slot="smart-bar-actions">
+        <sw-button :routerLink="{name: 'seller.location.list'}">{{$tc('wk-mp-hyperlocal.button.cancelButtonLabel')}}</sw-button>
+        <sw-button @click="onClickSave">{{$tc('wk-mp-hyperlocal.button.saveButtonLabel')}}</sw-button>
+    </template>
+   
+    <template slot="content">
+        <sw-card>
+            <sw-select-field :label="$tc('wk-mp-hyperlocal.create.sellerLabel')" :placeholder="$tc('wk-mp-hyperlocal.create.selectSellerPlaceholderText')" v-model="shippingLocation.customerId">
+                {# <option :value="adminId">Self</option> #}
+                <option :value="seller.id" v-for="seller in sellerCollection">
+                    {{seller.sellerName}}
+                </option>
+            </sw-select-field>
+           <sw-text-field :label="$tc('wk-mp-hyperlocal.create.locationLabel')" v-model="shippingLocation.location"></sw-text-field>
+            
+        </sw-card>
+        
+    </template>
+</sw-page>

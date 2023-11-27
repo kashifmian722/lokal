@@ -1,0 +1,47 @@
+{
+    "name": "webkul/webkul-mp-hyperlocal",
+    "description": "shopware6-marketplace-hyperlocal",
+    "version": "1.0.0",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Webkul Software Pvt. Ltd.",
+            "homepage": "https://webkul.com",
+            "role": "Manufacturer"
+        }
+    ],
+    "require": {
+        "shopware/core": "*",
+        "shopware/administration": "*",
+        "shopware/storefront": "*",
+        "webkul/multi-vendor-marketplace": "*"
+    },
+    "type": "shopware-platform-plugin",
+    "autoload": {
+        "psr-4": {
+            "Webkul\\MPHyperlocal\\": "src/"
+        }
+    },
+    "extra": {
+        "shopware-plugin-class": "Webkul\\MPHyperlocal\\WebkulMPHyperlocal",
+        "copyright": "(c) by Webkul",
+        "plugin-icon": "src/Resources/config/plugin.png",
+        "label": {
+            "en-GB": "Marketplace Hyperlocal",
+            "de-DE": "Marktplatz Hyperlokal"
+        },
+        "description": {
+      "de-DE": "Verbindet die Kunden mit lokalen Geschäften und verändert ihre Einkaufserlebnisse. Die Verkäufer können ihre Herkunft leicht addieren und sogar einen Radius festlegen, bis zu dem sie die Artikel an den Kunden liefern können. Auf der anderen Seite können die Kunden ihren Standort eingeben und die verfügbaren Verkäufer an diesem Standort überprüfen.",
+      "en-GB": "Connects the customers with local stores and transforms their shopping experiences. The Sellers can easily add up their origins and can even set a radius up to which they can deliver the items to the customer. On the other hand, the customers can enter their location and can check the available sellers in that location."
+    },
+    "manufacturerLink": {
+        "de-DE": "https://store.shopware.com/webkul-software-pvt.-ltd..html",
+        "en-GB": "https://store.shopware.com/en/webkul-software-pvt.-ltd..html"
+    },
+    "supportLink": {
+        "de-DE": "https://store.webkul.com/support.html",
+        "en-GB": "https://store.webkul.com/support.html"
+    }
+
+    }
+}

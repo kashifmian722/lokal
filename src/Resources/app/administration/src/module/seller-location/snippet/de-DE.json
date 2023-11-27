@@ -1,0 +1,25 @@
+{
+    "wk-mp-hyperlocal": {
+        "seller-location": {
+            "titleLabel": "Verkäufer Versandort",
+            "description": "Verkäufer Versandort hinzufügen",
+            "menuItemLabel": "Hyperlokaler Verkäufer Versandort"
+        },
+        "button": {
+            "addButtonLabel": "Neue hinzufügen",
+            "saveButtonLabel": "speichern",
+            "cancelButtonLabel": "Stornieren"
+        },
+        "list":{
+            "emptyStateTitle": "Es wurde noch kein Versandort des Verkäufers hinzugefügt!",
+            "emptyStateDesc": "Versandort hier verwalten",
+            "columnCollection": ["Name des Verkäufers", "Ort", "Breite", "Längengrad"]
+        },
+        "create": {
+            "selectSellerPlaceholderText": "Wählen Sie Verkäufer",
+            "sellerLabel": "Verkäuferin",
+            "locationLabel": "Ort",
+            "locationPlaceholderText": "Ort eingeben"
+        }
+    }
+}

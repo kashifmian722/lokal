@@ -1,0 +1,30 @@
+<sw-page>
+    <template #smart-bar-header>
+        <h2>{{$tc('wk-mp-hyperlocal.seller-location.titleLabel')}}</h2>
+        <span v-if="total" class="sw-page__smart-bar-amount">({{total}})</span>
+    </template>
+    <template slot="smart-bar-actions">
+        <sw-button :routerLink="{name: 'seller.location.create'}" >{{$tc('wk-mp-hyperlocal.button.addButtonLabel')}}</sw-button>
+    </template>
+    <template slot="content">
+    <sw-entity-listing
+        :items="shippingLocation"
+        :repository="locationRepository"
+        :showSelection="true"
+        :columns="columns">
+        <template #column-sellerName="{item}">
+            {{item.customer.firstName}} {{item.customer.lastName}}
+        </template>
+        {# <template #column-sellerName="{item}" :v-if="item.customerId == adminId">
+            {% if item.customerId == adminId %}
+                Self
+            {% else %}
+            {{item.customer.firstName}} {{item.customer.lastName}}
+            
+            {% endif %}
+        </template> #}
+    </sw-entity-listing>
+    <sw-empty-state v-if="!total" :title="$tc('wk-mp-hyperlocal.list.emptyStateTitle')">
+    {{$tc('wk-mp-hyperlocal.list.emptyStateDesc')}}</sw-empty-state>
+    </template>
+</sw-page>

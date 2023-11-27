@@ -1,0 +1,20 @@
+{
+    "wk-hyperlocal":{
+        "sellerLocationSidebar": "Add Shipping Location",
+        "shippingListSidebar": "Shipping List",
+        "locationLabel": "Enter Location",
+        "submitButton": "Submit",
+        "locationPlaceholder": "Enter your location",
+        "emptyLocationMessage": "No  Location Added Yet!",
+        "shippingLocationHeading": "Shipping Location",
+        "location": "Location",
+        "saveButton": "Save",
+        "latitudeLabel": "Latitude",
+        "longitudeLabel": "Longitude",
+        "changeLocationAlertMessage": "On change location not available product will be empty from cart.",
+        "enterLocationMessage": "Please enter the location",
+        "actionColumn": "Action",
+        "deleteButton": "DELETE"
+        
+    }
+}

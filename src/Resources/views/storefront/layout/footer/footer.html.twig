@@ -1,0 +1,152 @@
+{% sw_extends '@Storefront/storefront/layout/footer/footer.html.twig' %}
+
+{% block layout_footer_bottom %}
+  
+  <script type="text/javascript">
+    var sessionLocation = "{{page.footer.extensions['location'].id}}"
+    
+    if(sessionLocation == ''){
+     $(document).ready(function(){
+        $("#locationModal").show();
+     });
+
+    }
+    
+    
+    function closeModal() {
+        $("#locationModal").hide();
+    }
+    var lat;
+    var lng;
+    var data_state, data_state_code, data_country, data_country_code;
+    function initAutocomplete() 
+    {
+      const map = new google.maps.Map(document.getElementById("map"), {
+            center: {
+              lat: -33.8688,
+              lng: 151.2195
+            },
+            zoom: 13,
+            mapTypeId: "roadmap"
+        }); // Create the search box and link it to the UI element.
+      
+      const input = document.getElementById("pac-input");
+      const searchBox = new google.maps.places.SearchBox(input);
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); // Bias the SearchBox results towards current map's viewport.
+
+      map.addListener("bounds_changed", () => {
+        searchBox.setBounds(map.getBounds());
+      });
+      let markers = []; // Listen for the event fired when the user selects a prediction and retrieve
+      // more details for that place.
+      wkAutocomplete();
+      searchBox.addListener("places_changed", () => {
+        
+        const places = searchBox.getPlaces();
+        
+        if (places.length == 0) {
+          return;
+        } // Clear out the old markers.
+
+        markers.forEach(marker => {
+          marker.setMap(null);
+        });
+        markers = []; // For each place, get the icon, name and location.
+
+        const bounds = new google.maps.LatLngBounds();
+        places.forEach(place => {
+          if (!place.geometry) {
+            console.log("Returned place contains no geometry");
+            return;
+          }
+          place.address_components.forEach(function(item,index){
+              
+              if(item.types.includes('administrative_area_level_1')){
+                   data_state = item.long_name;
+                   data_state_code = item.short_name;
+              }
+              if(item.types.includes('country')){
+                   data_country = item.long_name;
+                   data_country_code = item.short_name;
+              }
+          })
+          // get location
+          var location = document.getElementById("wk-autocomplete").value;
+          // get lat
+           lat = place.geometry.location.lat();  
+          // get lng
+           lng = place.geometry.location.lng();
+           if(document.getElementById('lat')) {
+
+            document.getElementById('lat').value = lat;
+            document.getElementById('lng').value = lng;
+           }
+          const icon = { 
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          }; // Create a marker for each place.
+
+          markers.push(
+            new google.maps.Marker({
+              map,
+              icon,
+              title: place.name,
+              position: place.geometry.location
+            })
+          );
+
+          if (place.geometry.viewport) {
+            // Only geocodes have viewport.
+            bounds.union(place.geometry.viewport);
+          } else {
+            bounds.extend(place.geometry.location);
+          }
+        });
+        map.fitBounds(bounds);
+      });
+    }
+    function submitLocation() {
+      var location = document.getElementById("pac-input").value;
+        if(document.getElementById("pac-input").value == ''){
+          document.getElementById("error-label").innerText = '{{"wk-hyperlocal.enterLocationMessage"|trans}}';
+          return;
+        }
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+              var result = JSON.parse(this.response)
+              if(result.listingType == 'seller') {
+                window.location.href = "{{path('storefront.marketplace.sellers')}}";
+              } else {
+                window.location.href = "{{path('frontend.home.page')}}";
+              }
+          }
+        };
+        xhttp.open("POST", "{{path('wk-mp.add.location')}}");
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("location="+location+"&lat="+lat+"&lng="+lng+"&state="+data_state+"&state_code="+data_state_code+"&country="+data_country+"&country_code="+data_country_code+"");
+    }
+    </script>
+    <div id="locationModal" class="modal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">{{page.footer.extensions['popupTitle'].id}}</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group-row col-sm-12">
+              <lable class="form-label">{{"wk-hyperlocal.locationLabel"|trans}}*</label>
+              <input type="text" class="form-control" placeholder="Enter your location" id="pac-input">
+              <div class="error-label" id="error-label" style="color:red"></div>
+              <button class="button btn-primary" style="margin-top:10px" onclick="submitLocation()">{{"wk-hyperlocal.submitButton"|trans}}</button>
+          </div>
+          <div id="map" style="display:none"></div>
+        </div>
+        
+      </div>
+    </div>
+   
+{% endblock %}

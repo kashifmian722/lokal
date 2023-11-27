@@ -1,0 +1,84 @@
+{% sw_extends '@Storefront/storefront/page/account/_page.html.twig' %}
+{% block page_account_main_content %}
+    
+    <h3>{{"wk-hyperlocal.shippingLocationHeading"|trans}} </h3>
+    <form action="{{ path('wk.mp.hyperlocal.location') }}" method="post">
+      <div class="form-action-buttons">
+            <button type="submit" class="btn btn-primary" style="margin-left:10px">{{"wk-hyperlocal.saveButton"|trans}} </button>
+          
+      </div>
+      <div class="form-row">
+        <label class="form-label">{{"wk-hyperlocal.location"|trans}}*
+        <input
+          id="pac-input"
+          name="location"
+          class="form-control"
+          type="text"
+          placeholder="Search Box" required/>
+          </label>
+      </div>
+      <div class ="form-row">
+      <div class="form-group col-sm-6">
+        <label class="form-label">{{"wk-hyperlocal.latitudeLabel"|trans}}
+        <input id="lat" name="lat" class="form-control" type="text" required>
+        </label>
+      </div>
+      <div class="form-group col-sm-6">
+        <label class="form-label">{{"wk-hyperlocal.longitudeLabel"|trans}}
+        <input id="lng" name="lng" class="form-control" type="text" required>
+        </label>
+      </div>
+      </div>
+      
+    </form>
+    <div id="map" style="display:none"></div>
+    <div class="form-row" style="margin-top: 20px">
+      <table class="table table-bordered">
+        <thead>
+          <th>{{"wk-hyperlocal.location"|trans}}</th>
+          <th>{{"wk-hyperlocal.latitudeLabel"|trans}}</th>
+          <th>{{"wk-hyperlocal.longitudeLabel"|trans}}</th>
+          <th>{{"wk-hyperlocal.actionColumn"|trans}}</th>
+          
+         
+        </thead>
+        <tbody>
+          
+          {% for sellerLocation in sellerLocations %}
+            <tr>
+              <td>{{sellerLocation.location}}</td>
+              <td>{{sellerLocation.latitude}}</td>
+              <td>{{sellerLocation.longitude}}</td>
+              <td><button class="btn btn-light" type="button" onclick="deleteLocation('{{sellerLocation.id}}')">{{"wk-hyperlocal.deleteButton"|trans}}</button>
+              
+            </tr>
+            
+          {% endfor %}
+          {% if sellerLocations == [] %}
+            <tr>
+              {{"wk-hyperlocal.emptyLocationMessage"|trans}}
+            </tr>
+          {% endif %}
+        </tbody>
+
+      </table>
+    </div>
+    <script type="text/javascript">
+      function deleteLocation(id) {
+          if(confirm('Do you want to delete it?')){
+            var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  if(this.response){
+                    window.location.reload()
+                  }
+              }
+              };
+              xhttp.open("DELETE", "{{path('wk-mp.delete.location')}}");
+              xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+              xhttp.send("locationId="+id+"");
+          }
+      }
+    </script>
+  
+{% endblock %}

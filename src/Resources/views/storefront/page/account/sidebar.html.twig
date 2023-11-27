@@ -1,0 +1,79 @@
+{% sw_extends '@Storefront/storefront/page/account/sidebar.html.twig' %}
+
+{% block page_account_sidebar_menu %}
+    {{ parent() }}
+
+    <div id="storefront-sidebar-hyperlocal"></div>
+
+    <script type="text/javascript">
+        (() => {
+            new Vue({
+                el: "#storefront-sidebar-hyperlocal",
+
+                template: `
+                <div>
+                    <div v-if="sessionSeller">
+                        <div v-if="isSellerApproved">
+                            
+                            
+                            <a href="{{ path('marketplace.shipping.location') }}"
+                                title="{{"wk-hyperlocal.sellerLocationSidebar"|trans}}" 
+                                class="list-group-item list-group-item-action account-aside-item">
+                                    {{"wk-hyperlocal.sellerLocationSidebar"|trans}}
+                            </a>
+                        </div>
+                    </div>                                                                                                                                                                                                                                                                                                                                                                                                                                       
+
+                </div>
+                `,
+
+                data: function () {
+                    return {
+                        isSellerApplied: false,
+                        isSellerApproved: false,
+                        sessionSeller: "{{ context.customer and context.customer.id }}",
+                        addon: null
+                    }
+                },
+
+                beforeMount: function () {
+                    this.fetchConfigurationDetails();
+                },
+
+                methods: {
+                    fetchConfigurationDetails: function () {
+                        axios.get("{{ path('storefront.marketplace.api.fetch.configuration', {'customerId': context.customer.id }) }}")
+                        .then(response => {
+                            this.isSellerApplied = response.data.result.isSellerApplied;
+                            this.isSellerApproved = response.data.result.isSellerApproved;
+                            this.addon = response.data.addon
+                           
+                        })
+                        .catch(error => this.storefrontAlert({alertType: 'danger', alertMessage: '{{"wk-mp.successMessage.somethingWrongMessage"|trans}}'}))
+                    },
+
+                    becomeSellerAction: function (event) {
+                        event.preventDefault();
+
+                        axios.post("{{ path('storefront.marketplace.api.store.configuration') }}", {
+                            'sellershipStatus': true,
+                            'customerId': "{{ context.customer.id }}"
+                        })
+                        .then(response => {
+                            this.isSellerApplied = true;
+                            window.storefrontAlert({
+                                alertType: 'success',
+                                alertMessage: '{{"wk-mp.successMessage.appliedForSelershipMessage"|trans}}'
+                            });
+
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            window.storefrontAlert({alertType: 'danger', alertMessage: '{{"wk-mp.successMessage.somethingWrongMessage"|trans}}'});
+                        })
+                    },
+                }
+            })
+        })()
+    </script>
+{% endblock %}

@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+         <service id="Webkul\MPHyperlocal\Core\Content\Bundle\shippingLocationDefinition" public="true">
+            <tag name="shopware.entity.definition" entity="marketplace_hyperlocal_shipping_location" />
+        </service>
+        
+        <service id="Webkul\MPHyperlocal\Controller\Storefront\HyperlocalController" public="true">
+            <argument type="service" id="Shopware\Storefront\Page\Navigation\NavigationPageLoader"/>
+            <argument type="service" id="Shopware\Core\Checkout\Cart\SalesChannel\CartService" />
+            <argument type="service" id="Shopware\Core\Framework\Adapter\Cache\CacheClearer" />
+        </service>
+        <service id="Webkul\MPHyperlocal\Subscriber\HyperlocalSubscriber" public="true">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="service_container" />
+        </service>
+        
+    </services>
+</container>

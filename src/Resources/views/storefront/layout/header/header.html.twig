@@ -1,0 +1,177 @@
+{% sw_extends '@Storefront/storefront/layout/header/header.html.twig' %}
+{% block layout_header_search %}
+    
+    {% set address = page.footer.extensions['location'].id %}
+    {% set lat = page.footer.extensions['lat'].id %}
+    {% set lng = page.footer.extensions['lng'].id %}
+    {% set state = page.footer.extensions['state'].id %}
+    {% set stateCode = page.footer.extensions['stateCode'].id %}
+    {% set country = page.footer.extensions['country'].id %}
+    {% set countryCode = page.footer.extensions['countryCode'].id %}
+    
+    <div class="col-12 order-2 col-sm order-sm-1 header-search-col">
+        <div class="row">
+            <div class="col-sm-auto d-none d-sm-block d-lg-none">
+                {% block layout_header_navigation_toggle_tablet %}
+                    <div class="nav-main-toggle">
+                        {% block layout_header_navigation_toggle_tablet_button %}
+                            <button class="btn nav-main-toggle-btn header-actions-btn"
+                                    type="button"
+                                    data-offcanvas-menu="true"
+                                    aria-label="{{ "general.menuLink"|trans|striptags }}">
+                                {% block layout_header_navigation_toggle_tablet_button_icon %}
+                                    {% sw_icon 'stack' %}
+                                {% endblock %}
+                            </button>
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+            </div>
+            <div class="col">
+                {% sw_include '@Storefront/storefront/layout/header/search.html.twig' %}
+                
+            </div>
+            <div class="col-sm-4">
+                <div class="collapse" id="locationCollapse">
+                    <div class="header-search"  style="border: 1px solid #ccc;display: inline-flex;">
+                    
+                        <div class="">
+                              {% sw_icon 'marker' %}
+                        </div>
+                        <div class="">
+                            <label for="location" style="margin:0px">
+                            <input class="form-control" data-lat="{{lat}}" data-lng="{{lng}}" data-city="{{address}}" data-state="{{state}}" data-state_code="{{stateCode}}" data-country_code="{{countryCode}}" data-country="{{country}}" name="address" data-postcode="" value="{{address}}" id="wk-autocomplete" type="text" placeholder="{{"wk-hyperlocal.locationPlaceholder"|trans}}" style="border:none;" autocomplete="off">
+                            </label>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    function wkAutocomplete() 
+    {
+      const map = new google.maps.Map(document.getElementById("map"), {
+            center: {
+              lat: -33.8688,
+              lng: 151.2195
+            },
+            zoom: 13,
+            mapTypeId: "roadmap"
+        }); // Create the search box and link it to the UI element.
+      
+      const input = document.getElementById("wk-autocomplete");
+      const searchBox = new google.maps.places.SearchBox(input);
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); // Bias the SearchBox results towards current map's viewport.
+
+      map.addListener("bounds_changed", () => {
+        searchBox.setBounds(map.getBounds());
+      });
+      let markers = []; // Listen for the event fired when the user selects a prediction and retrieve
+      // more details for that place.
+
+      searchBox.addListener("places_changed", () => {
+        
+        const places = searchBox.getPlaces();
+        
+        if (places.length == 0) {
+          return;
+        } // Clear out the old markers.
+
+        markers.forEach(marker => {
+          marker.setMap(null);
+        });
+        markers = []; // For each place, get the icon, name and location.
+
+        const bounds = new google.maps.LatLngBounds();
+        places.forEach(place => {
+          if (!place.geometry) {
+            console.log("Returned place contains no geometry");
+            return;
+          }
+          var data_state, data_state_code, data_country, data_country_code;
+          place.address_components.forEach(function(item,index){
+              
+              if(item.types.includes('administrative_area_level_1')){
+                   data_state = item.long_name;
+                   data_state_code = item.short_name;
+              }
+              if(item.types.includes('country')){
+                   data_country = item.long_name;
+                   data_country_code = item.short_name;
+              }
+          })
+          // get location
+          var location = document.getElementById("wk-autocomplete").value;
+          // get lat
+          var lat = place.geometry.location.lat();  
+          // get lng
+          var lng = place.geometry.location.lng();
+
+            if(confirm("{{'wk-hyperlocal.changeLocationAlertMessage'|trans}}")) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var result = JSON.parse(this.response)
+                    if(result.listingType == 'seller') {
+                        window.location.href = "{{path('storefront.marketplace.sellers')}}";
+                    } else {
+                        window.location.href = "{{path('frontend.home.page')}}";
+                    }
+                }
+                };
+                xhttp.open("POST", "{{path('wk-mp.add.location')}}");
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhttp.send("location="+location+"&lat="+lat+"&lng="+lng+"&state="+data_state+"&state_code="+data_state_code+"&country="+data_country+"&country_code="+data_country_code+"");
+            }
+           if(document.getElementById('lat')) {
+
+            document.getElementById('lat').value = lat;
+            document.getElementById('lng').value = lng;
+           }
+          const icon = { 
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          }; // Create a marker for each place.
+
+          markers.push(
+            new google.maps.Marker({
+              map,
+              icon,
+              title: place.name,
+              position: place.geometry.location
+            })
+          );
+
+          if (place.geometry.viewport) {
+            // Only geocodes have viewport.
+            bounds.union(place.geometry.viewport);
+          } else {
+            bounds.extend(place.geometry.location);
+          }
+        });
+        map.fitBounds(bounds);
+      });
+    }
+    </script>
+{% endblock %}
+{% block layout_header_search_toggle %}
+  {{parent()}}
+  <div class="col-auto d-sm-none">
+      <div class="search-toggle">
+          <button class="btn header-actions-btn search-toggle-btn js-search-toggle-btn collapsed"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#locationCollapse"
+                  aria-expanded="false"
+                  aria-controls="locationCollapse"
+                  aria-label="{{ "header.searchButton"|trans|striptags }}">
+              {% sw_icon 'marker' %}
+          </button>
+      </div>
+  </div>
+{% endblock %}

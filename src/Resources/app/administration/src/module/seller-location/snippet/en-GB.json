@@ -1,0 +1,25 @@
+{
+    "wk-mp-hyperlocal": {
+        "seller-location": {
+            "titleLabel": "Seller Shipping Location",
+            "description": "Add Seller shipping location",
+            "menuItemLabel": "Hyperlocal Seller Shipping Location"
+        },
+        "button": {
+            "addButtonLabel": "Add New",
+            "saveButtonLabel": "Save",
+            "cancelButtonLabel": "Cancel"
+        },
+        "list":{
+            "emptyStateTitle": "No Seller Shipping Location Added Yet!",
+            "emptyStateDesc": "Manage Shipping Location Here",
+            "columnCollection": ["Seller Name", "Location", "Latitude", "Longitude"]
+        },
+        "create": {
+            "selectSellerPlaceholderText": "Select Seller",
+            "sellerLabel": "Seller",
+            "locationLabel": "Location",
+            "locationPlaceholderText": "Enter Location"
+        }
+    }
+}

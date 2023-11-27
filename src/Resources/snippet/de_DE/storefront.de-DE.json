@@ -1,0 +1,20 @@
+{
+    "wk-hyperlocal":{
+        "sellerLocationSidebar": "Versandort hinzufügen",
+        "shippingListSidebar": "Versandliste",
+        "locationLabel": "Ort eingeben",
+        "submitButton": "einreichen",
+        "locationPlaceholder": "Gib deinen Standort an",
+        "emptyLocationMessage": "Noch kein Standort hinzugefügt!",
+        "shippingLocationHeading": "Versandort",
+        "location": "Ort",
+        "saveButton": "speichern",
+        "latitudeLabel": "Breite",
+        "longitudeLabel": "Längengrad",
+        "changeLocationAlertMessage": "Bei einem Standortwechsel ist das nicht verfügbare Produkt aus dem Warenkorb leer.",
+        "enterLocationMessage": "Bitte geben Sie den Ort ein",
+        "actionColumn": "Aktion",
+        "deleteButton": "LÖSCHEN"
+        
+    }
+}

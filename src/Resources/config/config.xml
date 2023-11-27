@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/platform/master/src/Core/System/SystemConfig/Schema/config.xsd">
+    <card>
+        <title>Hyperlocal Configuration</title>
+        <title lang="de-DE">Hyperlokale Konfiguration</title>
+        
+        <input-field type="password">
+            <name>googleMapApiKey</name>
+            <label> Google Map Api Key*</label>
+            <label lang="de-DE">Google Map API-Schlüssel</label>
+            <helpText>Get Google Map-Api key from https://developers.google.com/maps/documentation/javascript/get-api-key#key</helpText>
+        </input-field>
+        
+        <input-field type="single-select">
+            <name>radiusUnit</name>
+            <label>Radius Unit*</label>
+            <label lang="de-DE">Radiuseinheit</label>
+            <options>
+                <option>
+                    <id>Km</id>
+                    <name>Kilometers</name>
+                    <name lang="de-DE">Kilometers</name>
+                </option>
+                <option>
+                    <id>Mi</id>
+                    <name>Miles</name>
+                    <name lang="de-DE">Meilen</name>
+                </option>
+            </options>
+        </input-field>
+        <input-field type="float">
+            <name>radius</name>
+            <label>Radius*</label>
+            <label lang="de-DE">Radius</label>
+            <helpText>Radius is used for searching sellers in the radius of user's location</helpText>
+            <helpText lang="de-DE">Der Radius wird zum Suchen von Verkäufern im Radius des Standortes des Benutzers verwendet</helpText>
+        </input-field>
+        
+        <input-field type="single-select">
+            <name>listingType</name>
+            <label>Page Listing*</label>
+            <label lang="de-DE">Seitenauflistung*</label>
+            <helpText>Which page  will be show  after enter the location of the customer.</helpText>
+            <helpText lang="de-DE">Welche Seite wird angezeigt, nachdem Sie den Standort des Kunden eingegeben haben.</helpText>
+            <options>
+                <option>
+                    <id>product</id>
+                    <name>Home Page</name>
+                    <name lang="de-DE">Startseite</name>
+                </option>
+                <option>
+                    <id>seller</id>
+                    <name>Marketplace Sellers Page</name>
+                    <name lang="de-DE">Marktplatz Verkäufer Seite</name>
+                </option>
+            </options>
+        </input-field>
+        <input-field type="text">
+            <name>popupTitle</name>
+            <label>Location Popup Title</label>
+            <label lang="de-DE">Standort-Popup-Titel</label>
+        </input-field>
+        
+        <input-field type="bool">
+            <name>defaultProducts</name>
+            <label>Show Default Products</label>
+            <label lang="de-DE">Standardprodukt anzeigen</label>
+        </input-field>
+    </card>
+</config>
